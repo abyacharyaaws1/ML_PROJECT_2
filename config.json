@@ -1,0 +1,8 @@
+{
+    "train_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/train_data.csv",
+    "test_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/test_data.csv",
+    "transformed_train_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformed_train_data.csv",
+    "transformed_test_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformed_test_data.csv",
+    "transformer_object_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformer.pkl"
+  }
+  
