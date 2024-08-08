@@ -7,3 +7,4 @@ dataclasses
 joblib
 xgboost
 catboost
+flask
