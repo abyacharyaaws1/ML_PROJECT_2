@@ -18,26 +18,19 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2
+        aws-region: us-east-1
 
     - name: Build Docker image
       run: |
-        # Build Docker image
         docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
-        
-        # Authenticate Docker to ECR
-        aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
-
-        # Tag and push Docker image
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
         docker tag ${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.ECR_REPOSITORY }}:latest
         docker push ${{ secrets.ECR_REPOSITORY }}:latest
 
     - name: Update ECS Service
       run: |
-        # Update the ECS task definition
-        TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition my-task-family | jq -r '.taskDefinition.taskDefinitionArn')
+        TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition my-task-family --region us-east-1 | jq -r '.taskDefinition.taskDefinitionArn')
 
-        # Register new task definition revision
         NEW_TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
           --family my-task-family \
           --network-mode awsvpc \
@@ -63,7 +56,7 @@ jobs:
             }
           }]' \
           --query 'taskDefinition.taskDefinitionArn' \
-          --output text)
+          --output text \
+          --region us-east-1)
         
-        # Update ECS service to use new task definition revision
-        aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition $NEW_TASK_DEFINITION_ARN
+        aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition $NEW_TASK_DEFINITION_ARN --region us-east-1
