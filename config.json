@@ -1,9 +1,9 @@
 {
-    "train_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/train_data.csv",
-    "test_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/test_data.csv",
-    "transformed_train_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformed_train_data.csv",
-    "transformed_test_data_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformed_test_data.csv",
-    "transformer_object_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/transformer.pkl",
-    "model_output_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/best_model.pkl",
-    "evaluation_metrics_path": "C:/Users/abyac/OneDrive/Documents/GitHub/ML_PROJECT_2/notebook/data/evaluation_metrics.json"
+    "train_data_path": "notebook/data/train_data.csv",
+    "test_data_path": "notebook/data/test_data.csv",
+    "transformed_train_data_path": "notebook/data/transformed_train_data.csv",
+    "transformed_test_data_path": "notebook/data/transformed_test_data.csv",
+    "transformer_object_path": "notebook/data/transformer.pkl",
+    "model_output_path": "notebook/data/best_model.pkl",
+    "evaluation_metrics_path": "notebook/data/evaluation_metrics.json"
 }
