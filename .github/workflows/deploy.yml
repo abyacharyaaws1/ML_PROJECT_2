@@ -23,9 +23,10 @@ jobs:
     - name: Build Docker image
       run: |
         set -x
-        docker build -t public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest .
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
-        docker push public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest
+        docker build -t my-flask-app-repo .
+        docker tag my-flask-app-repo:latest ${{ secrets.ECR_REPOSITORY }}:latest
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
+        docker push ${{ secrets.ECR_REPOSITORY }}:latest
 
     - name: Update ECS Service
       run: |
