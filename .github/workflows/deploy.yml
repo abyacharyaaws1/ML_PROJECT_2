@@ -13,25 +13,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-    - name: Build Docker image
+    - name: Register new Task Definition
       run: |
-        set -x
-        docker build -t my-flask-app-repo .
-        docker tag my-flask-app-repo:latest ${{ secrets.ECR_REPOSITORY }}:latest
-        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
-        docker push ${{ secrets.ECR_REPOSITORY }}:latest
-
-    - name: Update ECS Service
-      run: |
-        TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition my-task-family --region us-east-1 | jq -r '.taskDefinition.taskDefinitionArn')
-
         NEW_TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
           --family my-task-family \
           --network-mode awsvpc \
@@ -40,7 +23,7 @@ jobs:
           --memory "512" \
           --container-definitions '[{
             "name": "flask-container",
-            "image": "public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest",
+            "image": "${{ secrets.ECR_REPOSITORY }}:latest",
             "essential": true,
             "memory": 512,
             "cpu": 256,
@@ -59,5 +42,9 @@ jobs:
           --query 'taskDefinition.taskDefinitionArn' \
           --output text \
           --region us-east-1)
+        
+        echo "New Task Definition ARN: $NEW_TASK_DEFINITION_ARN"
 
+    - name: Update ECS Service
+      run: |
         aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition $NEW_TASK_DEFINITION_ARN --region us-east-1
