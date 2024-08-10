@@ -17,16 +17,13 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ ACCESS_KEY }}
         aws-region: us-east-1
 
     - name: Build Docker image
       run: |
-        set -x
-        docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
-        docker tag ${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.ECR_REPOSITORY }}:latest
-        docker push ${{ secrets.ECR_REPOSITORY }}:latest
+        docker build -t public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest .
+        docker push public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest
 
     - name: Update ECS Service
       run: |
@@ -40,7 +37,7 @@ jobs:
           --memory "512" \
           --container-definitions '[{
             "name": "flask-container",
-            "image": "${{ secrets.ECR_REPOSITORY }}:latest",
+            "image": "public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest",
             "essential": true,
             "memory": 512,
             "cpu": 256,
