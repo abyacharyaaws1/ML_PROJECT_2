@@ -23,7 +23,7 @@ jobs:
     - name: Build Docker image
       run: |
         set -x
-        docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
+        docker build -t public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest .
       
         docker push public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest
 
