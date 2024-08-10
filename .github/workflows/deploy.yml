@@ -23,8 +23,6 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
-        docker tag ${{ secrets.ECR_REPOSITORY }}:latest ${{ secrets.ECR_REPOSITORY }}:latest
         docker push ${{ secrets.ECR_REPOSITORY }}:latest
 
     - name: Update ECS Service
@@ -58,5 +56,5 @@ jobs:
           --query 'taskDefinition.taskDefinitionArn' \
           --output text \
           --region us-east-1)
-        
+
         aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition $NEW_TASK_DEFINITION_ARN --region us-east-1
