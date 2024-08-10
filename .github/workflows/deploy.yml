@@ -17,12 +17,14 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
     - name: Build Docker image
       run: |
-        docker build -t public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest .
+        set -x
+        docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
+      
         docker push public.ecr.aws/r2o3x0u0/my-flask-app-repo:latest
 
     - name: Update ECS Service
