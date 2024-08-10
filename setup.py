@@ -19,7 +19,8 @@ def read_long_description(file):
         return "This is my first ML project."
 
 setup(
-    name='ML_PROJECT2',
+    name='ML_PROJECT_2',
+>>>>>>> 574e327ac5bc4d1f26ee6165faadc4738674d7e9
     version='0.1.0',
     description='This is my first ML project',
     long_description=read_long_description('README.md'),
