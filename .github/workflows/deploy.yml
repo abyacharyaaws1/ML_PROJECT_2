@@ -29,6 +29,7 @@ jobs:
         docker push ${{ secrets.ECR_REPOSITORY }}:latest
 
     - name: Register new Task Definition
+      id: register_task
       run: |
         NEW_TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
           --family my-task-family \
@@ -59,7 +60,9 @@ jobs:
           --region us-east-1)
         
         echo "New Task Definition ARN: $NEW_TASK_DEFINITION_ARN"
+        echo "::set-output name=task_definition_arn::$NEW_TASK_DEFINITION_ARN"
 
     - name: Update ECS Service
       run: |
-        aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition $NEW_TASK_DEFINITION_ARN --region us-east-1
+        echo "Task Definition ARN: ${{ steps.register_task.outputs.task_definition_arn }}"
+        aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition ${{ steps.register_task.outputs.task_definition_arn }} --region us-east-1
