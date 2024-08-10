@@ -32,7 +32,7 @@ jobs:
       id: register_task
       run: |
         NEW_TASK_DEFINITION_ARN=$(aws ecs register-task-definition \
-          --family my-task-family \
+          --family flask-task \
           --network-mode awsvpc \
           --requires-compatibilities FARGATE \
           --cpu "256" \
@@ -67,6 +67,6 @@ jobs:
         echo "Updating ECS Service with Task Definition ARN: ${{ steps.register_task.outputs.task_definition_arn }}"
         aws ecs update-service \
           --cluster my-ecs-cluster \
-          --service my-ecs-service \
+          --service flask-service \
           --task-definition ${{ steps.register_task.outputs.task_definition_arn }} \
           --region us-east-1
