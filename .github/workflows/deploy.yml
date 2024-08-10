@@ -64,5 +64,9 @@ jobs:
 
     - name: Update ECS Service
       run: |
-        echo "Task Definition ARN: ${{ steps.register_task.outputs.task_definition_arn }}"
-        aws ecs update-service --cluster my-ecs-cluster --service my-ecs-service --task-definition ${{ steps.register_task.outputs.task_definition_arn }} --region us-east-1
+        echo "Updating ECS Service with Task Definition ARN: ${{ steps.register_task.outputs.task_definition_arn }}"
+        aws ecs update-service \
+          --cluster my-ecs-cluster \
+          --service my-ecs-service \
+          --task-definition ${{ steps.register_task.outputs.task_definition_arn }} \
+          --region us-east-1
